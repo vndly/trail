@@ -4,9 +4,6 @@ import android.util.Log;
 
 public class Logger
 {
-	// Debug.trace();
-	// Measure time
-	
 	private static boolean LOGS_ENABLED = true;
 	
 	public static void setEnable(boolean enabled)
@@ -16,10 +13,17 @@ public class Logger
 	
 	private static String getDefaultTag()
 	{
-		StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-		String className = stackTrace[2].getClassName();
-		
-		return className.substring(className.lastIndexOf(".") + 1);
+		try
+		{
+			StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+			String className = stackTrace[2].getClassName();
+			
+			return className.substring(className.lastIndexOf(".") + 1);
+		}
+		catch (Exception e)
+		{
+			return Logger.class.getName();
+		}
 	}
 	
 	// ======================= VERBOSE ======================= \\
