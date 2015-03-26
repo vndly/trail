@@ -1,195 +1,234 @@
 package com.mauriciotogneri.logger;
 
+import android.util.Log;
+
 public class Logger
 {
-	private final GenericLogger defaultLogger;
-	private final GenericLogger infoLogger;
-	private final GenericLogger debugLogger;
-	private final GenericLogger warningLogger;
-	private final GenericLogger errorLogger;
+	// Debug.trace();
+	// Measure time
 	
 	private static boolean LOGS_ENABLED = true;
-	private static Logger DEFAULT = new Logger(Logger.class.toString());
-	
-	public enum Level
-	{
-		INFO, DEBUG, WARNING, ERROR
-	}
-	
-	public Logger(Object tag)
-	{
-		this(tag, null);
-	}
-	
-	public Logger(Object tag, Level level)
-	{
-		this.infoLogger = new InfoLogger(tag);
-		this.debugLogger = new DebugLogger(tag);
-		this.warningLogger = new WarningLogger(tag);
-		this.errorLogger = new ErrorLogger(tag);
-		this.defaultLogger = getDefaultLogger(level);
-	}
-	
-	private GenericLogger getDefaultLogger(Level level)
-	{
-		GenericLogger result = null;
-		
-		if (level == null)
-		{
-			result = this.infoLogger;
-		}
-		else
-		{
-			switch (level)
-			{
-				case INFO:
-					result = this.infoLogger;
-					break;
-				
-				case DEBUG:
-					result = this.debugLogger;
-					break;
-				
-				case WARNING:
-					result = this.warningLogger;
-					break;
-				
-				case ERROR:
-					result = this.errorLogger;
-					break;
-			}
-		}
-		
-		return result;
-	}
 	
 	public static void setEnable(boolean enabled)
 	{
 		Logger.LOGS_ENABLED = enabled;
 	}
 	
-	public static boolean isEnabled()
+	private static String getDefaultTag()
 	{
-		return Logger.LOGS_ENABLED;
+		StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+		String className = stackTrace[2].getClassName();
+		
+		return className.substring(className.lastIndexOf(".") + 1);
 	}
 	
-	public static Logger getDefault()
+	// ======================= VERBOSE ======================= \\
+	
+	public static void v(Object tag, Object msg, Throwable e)
 	{
-		return Logger.DEFAULT;
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.v(tag.toString(), msg.toString(), e);
+		}
 	}
 	
-	public static void logException(Object tag, Throwable e)
+	public static void v(Object tag, Object msg)
 	{
-		Logger.DEFAULT.e(tag, e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.v(tag.toString(), msg.toString());
+		}
+	}
+	
+	public static void v(Object tag, Throwable e)
+	{
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.v(tag.toString(), e.getMessage(), e);
+		}
+	}
+	
+	public static void v(Object msg)
+	{
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.v(Logger.getDefaultTag(), msg.toString());
+		}
+	}
+	
+	public static void v(Throwable e)
+	{
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.v(Logger.getDefaultTag(), e.getMessage(), e);
+		}
 	}
 	
 	// ======================= INFO ======================= \\
 	
-	public void i(Object tag, Object msg, Throwable e)
+	public static void i(Object tag, Object msg, Throwable e)
 	{
-		this.infoLogger.log(tag, msg.toString(), e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.i(tag.toString(), msg.toString(), e);
+		}
 	}
 	
-	public void i(Object tag, Object msg)
+	public static void i(Object tag, Object msg)
 	{
-		this.infoLogger.log(tag, msg.toString());
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.i(tag.toString(), msg.toString());
+		}
 	}
 	
-	public void i(Object msg)
+	public static void i(Object tag, Throwable e)
 	{
-		this.infoLogger.log(msg.toString());
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.i(tag.toString(), e.getMessage(), e);
+		}
 	}
 	
-	public void i(Throwable e)
+	public static void i(Object msg)
 	{
-		this.infoLogger.log(e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.i(Logger.getDefaultTag(), msg.toString());
+		}
+	}
+	
+	public static void i(Throwable e)
+	{
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.i(Logger.getDefaultTag(), e.getMessage(), e);
+		}
 	}
 	
 	// ======================= DEBUG ======================= \\
 	
-	public void d(Object tag, Object msg, Throwable e)
+	public static void d(Object tag, Object msg, Throwable e)
 	{
-		this.debugLogger.log(tag, msg.toString(), e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.d(tag.toString(), msg.toString(), e);
+		}
 	}
 	
-	public void d(Object tag, Object msg)
+	public static void d(Object tag, Object msg)
 	{
-		this.debugLogger.log(tag, msg.toString());
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.d(tag.toString(), msg.toString());
+		}
 	}
 	
-	public void d(Object msg)
+	public static void d(Object tag, Throwable e)
 	{
-		this.debugLogger.log(msg.toString());
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.d(tag.toString(), e.getMessage(), e);
+		}
 	}
 	
-	public void d(Throwable e)
+	public static void d(Object msg)
 	{
-		this.debugLogger.log(e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.d(Logger.getDefaultTag(), msg.toString());
+		}
+	}
+	
+	public static void d(Throwable e)
+	{
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.d(Logger.getDefaultTag(), e.getMessage(), e);
+		}
 	}
 	
 	// ======================= WARNING ======================= \\
 	
-	public void w(Object tag, Object msg, Throwable e)
+	public static void w(Object tag, Object msg, Throwable e)
 	{
-		this.warningLogger.log(tag, msg.toString(), e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.w(tag.toString(), msg.toString(), e);
+		}
 	}
 	
-	public void w(Object tag, Object msg)
+	public static void w(Object tag, Object msg)
 	{
-		this.warningLogger.log(tag, msg.toString());
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.w(tag.toString(), msg.toString());
+		}
 	}
 	
-	public void w(Object msg)
+	public static void w(Object tag, Throwable e)
 	{
-		this.warningLogger.log(msg.toString());
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.w(tag.toString(), e.getMessage(), e);
+		}
 	}
 	
-	public void w(Throwable e)
+	public static void w(Object msg)
 	{
-		this.warningLogger.log(e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.w(Logger.getDefaultTag(), msg.toString());
+		}
+	}
+	
+	public static void w(Throwable e)
+	{
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.w(Logger.getDefaultTag(), e.getMessage(), e);
+		}
 	}
 	
 	// ======================= ERROR ======================= \\
 	
-	public void e(Object tag, Object msg, Throwable e)
+	public static void e(Object tag, Object msg, Throwable e)
 	{
-		this.errorLogger.log(tag, msg.toString(), e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.e(tag.toString(), msg.toString(), e);
+		}
 	}
 	
-	public void e(Object tag, Object msg)
+	public static void log(Object tag, Object msg)
 	{
-		this.errorLogger.log(tag, msg.toString());
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.e(tag.toString(), msg.toString());
+		}
 	}
 	
-	public void e(Object msg)
+	public static void log(Object tag, Throwable e)
 	{
-		this.errorLogger.log(msg.toString());
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.e(tag.toString(), e.getMessage(), e);
+		}
 	}
 	
-	public void e(Throwable e)
+	public static void log(Object msg)
 	{
-		this.errorLogger.log(e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.e(Logger.getDefaultTag(), msg.toString());
+		}
 	}
 	
-	// ======================= DEFAULT LOG ======================= \\
-	
-	public void l(Object tag, Object msg, Throwable e)
+	public static void log(Throwable e)
 	{
-		this.defaultLogger.log(tag, msg.toString(), e);
-	}
-	
-	public void l(Object tag, Object msg)
-	{
-		this.defaultLogger.log(tag, msg.toString());
-	}
-	
-	public void l(Object msg)
-	{
-		this.defaultLogger.log(msg.toString());
-	}
-	
-	public void l(Throwable e)
-	{
-		this.defaultLogger.log(e);
+		if (Logger.LOGS_ENABLED)
+		{
+			Log.e(Logger.getDefaultTag(), e.getMessage(), e);
+		}
 	}
 }
