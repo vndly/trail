@@ -204,7 +204,7 @@ public class Logger
 		}
 	}
 	
-	public static void log(Object tag, Object msg)
+	public static void e(Object tag, Object msg)
 	{
 		if (Logger.LOGS_ENABLED)
 		{
@@ -212,7 +212,7 @@ public class Logger
 		}
 	}
 	
-	public static void log(Object tag, Throwable e)
+	public static void e(Object tag, Throwable e)
 	{
 		if (Logger.LOGS_ENABLED)
 		{
@@ -220,7 +220,7 @@ public class Logger
 		}
 	}
 	
-	public static void log(Object msg)
+	public static void e(Object msg)
 	{
 		if (Logger.LOGS_ENABLED)
 		{
@@ -228,7 +228,7 @@ public class Logger
 		}
 	}
 	
-	public static void log(Throwable e)
+	public static void e(Throwable e)
 	{
 		if (Logger.LOGS_ENABLED)
 		{
