@@ -6,7 +6,7 @@ public class Logger
 {
 	private static boolean LOGS_ENABLED = true;
 	
-	public static void setEnable(boolean enabled)
+	public static void setEnabled(boolean enabled)
 	{
 		Logger.LOGS_ENABLED = enabled;
 	}
