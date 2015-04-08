@@ -1,1 +1,3 @@
-# logger
+# Logger
+
+Simple Android logging system

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import android.util.Log;
 
-public class Logger
+public final class Logger
 {
 	private static boolean LOGS_ENABLED = true;
 	
@@ -19,6 +19,16 @@ public class Logger
 	{
 		Logger.LOGS_ENABLED = enabled;
 	}
+
+    public static void addListener(Listener listener)
+    {
+        Logger.listeners.add(listener);
+    }
+
+    public static void removeListener(Listener listener)
+    {
+        Logger.listeners.remove(listener);
+    }
 	
 	private static String getDefaultTag()
 	{
