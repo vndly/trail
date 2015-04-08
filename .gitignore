@@ -27,6 +27,7 @@ testlogger
 
 # Ignore gradle files
 .gradle
+settings.gradle
 /build
 /logger/build
 **/build
