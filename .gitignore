@@ -22,12 +22,9 @@ gen/
 # OSX files
 .DS_Store
 
-# Ignore test module
-testlogger
-
 # Ignore gradle files
 .gradle
 settings.gradle
 /build
-/logger/build
+/app/build
 **/build

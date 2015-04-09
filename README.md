@@ -1,3 +1,3 @@
-# Logger
+# Trail
 
-Simple Android logging system
+Simple Java/Android logging system
