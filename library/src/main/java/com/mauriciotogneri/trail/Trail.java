@@ -5,28 +5,17 @@ import java.util.List;
 
 public final class Trail
 {
-    private static Mode mode = null;
     private static boolean logsEnabled = true;
     private static boolean listenersEnabled = true;
 
-    private static LogPrinter javaLogger = new JavaLogger();
-    private static LogPrinter androidLogger = new AndroidLogger();
+    private static JavaLogger javaLogger = new JavaLogger();
+    private static AndroidLogger androidLogger = new AndroidLogger();
 
     private static List<Listener> listeners = new ArrayList<Listener>();
 
     public enum Level
     {
         VERBOSE, INFO, DEBUG, WARNING, ERROR
-    }
-
-    public enum Mode
-    {
-        JAVA, ANDROID
-    }
-
-    public static void setMode(Mode mode)
-    {
-        Trail.mode = mode;
     }
 
     public static void enableLogs(boolean enabled)
@@ -39,12 +28,12 @@ public final class Trail
         Trail.listenersEnabled = enabled;
     }
 
-    public static void addListener(Listener listener)
+    public static void register(Listener listener)
     {
         Trail.listeners.add(listener);
     }
 
-    public static void removeListener(Listener listener)
+    public static void unregister(Listener listener)
     {
         Trail.listeners.remove(listener);
     }
@@ -64,17 +53,17 @@ public final class Trail
         }
     }
 
-    private static void log(Level level, String tag, String message, Throwable error)
+    private static void log(Level level, String tag, String message, Throwable exception)
     {
         if (Trail.logsEnabled)
         {
-            if (Trail.mode == Mode.JAVA)
+            if (Trail.androidLogger.isAvailable())
             {
-                Trail.javaLogger.log(level, tag, message, error);
+                Trail.androidLogger.log(level, tag, message, exception);
             }
-            else if (Trail.mode == Mode.ANDROID)
+            else
             {
-                Trail.androidLogger.log(level, tag, message, error);
+                Trail.javaLogger.log(level, tag, message, exception);
             }
         }
 
@@ -82,7 +71,7 @@ public final class Trail
         {
             for (Listener listener : Trail.listeners)
             {
-                listener.onLog(level, tag, message, error);
+                listener.onLog(level, tag, message, exception);
             }
         }
     }
@@ -92,150 +81,150 @@ public final class Trail
         Trail.log(level, tag, message, null);
     }
 
-    // ======================= VERBOSE ======================= \\
+    // ============================ VERBOSE ============================ \\
 
-    public static void verbose(Object tag, Object msg, Throwable e)
+    public static void verbose(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.VERBOSE, tag.toString(), msg.toString(), e);
+        Trail.log(Level.VERBOSE, tag.toString(), message.toString(), exception);
     }
 
-    public static void verbose(Object tag, Object msg)
+    public static void verbose(Object tag, Object message)
     {
-        Trail.log(Level.VERBOSE, tag.toString(), msg.toString());
+        Trail.log(Level.VERBOSE, tag.toString(), message.toString());
     }
 
-    public static void verbose(Object tag, Throwable e)
+    public static void verbose(Object tag, Throwable exception)
     {
-        Trail.log(Level.VERBOSE, tag.toString(), e.getMessage(), e);
+        Trail.log(Level.VERBOSE, tag.toString(), exception.getMessage(), exception);
     }
 
-    public static void verbose(Object msg)
+    public static void verbose(Object message)
     {
-        Trail.log(Level.VERBOSE, Trail.getDefaultTag(), msg.toString());
+        Trail.log(Level.VERBOSE, Trail.getDefaultTag(), message.toString());
     }
 
-    public static void verbose(Throwable e)
+    public static void verbose(Throwable exception)
     {
-        Trail.log(Level.VERBOSE, Trail.getDefaultTag(), e.getMessage(), e);
+        Trail.log(Level.VERBOSE, Trail.getDefaultTag(), exception.getMessage(), exception);
     }
 
-    // ======================= INFO ======================= \\
+    // ============================ INFO ============================ \\
 
-    public static void info(Object tag, Object msg, Throwable e)
+    public static void info(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.INFO, tag.toString(), msg.toString(), e);
+        Trail.log(Level.INFO, tag.toString(), message.toString(), exception);
     }
 
-    public static void info(Object tag, Object msg)
+    public static void info(Object tag, Object message)
     {
-        Trail.log(Level.INFO, tag.toString(), msg.toString());
+        Trail.log(Level.INFO, tag.toString(), message.toString());
     }
 
-    public static void info(Object tag, Throwable e)
+    public static void info(Object tag, Throwable exception)
     {
-        Trail.log(Level.INFO, tag.toString(), e.getMessage(), e);
+        Trail.log(Level.INFO, tag.toString(), exception.getMessage(), exception);
     }
 
-    public static void info(Object msg)
+    public static void info(Object message)
     {
-        Trail.log(Level.INFO, Trail.getDefaultTag(), msg.toString());
+        Trail.log(Level.INFO, Trail.getDefaultTag(), message.toString());
     }
 
-    public static void info(Throwable e)
+    public static void info(Throwable exception)
     {
-        Trail.log(Level.INFO, Trail.getDefaultTag(), e.getMessage(), e);
+        Trail.log(Level.INFO, Trail.getDefaultTag(), exception.getMessage(), exception);
     }
 
-    // ======================= DEBUG ======================= \\
+    // ============================ DEBUG ============================ \\
 
-    public static void debug(Object tag, Object msg, Throwable e)
+    public static void debug(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.DEBUG, tag.toString(), msg.toString(), e);
+        Trail.log(Level.DEBUG, tag.toString(), message.toString(), exception);
     }
 
-    public static void debug(Object tag, Object msg)
+    public static void debug(Object tag, Object message)
     {
-        Trail.log(Level.DEBUG, tag.toString(), msg.toString());
+        Trail.log(Level.DEBUG, tag.toString(), message.toString());
     }
 
-    public static void debug(Object tag, Throwable e)
+    public static void debug(Object tag, Throwable exception)
     {
-        Trail.log(Level.DEBUG, tag.toString(), e.getMessage(), e);
+        Trail.log(Level.DEBUG, tag.toString(), exception.getMessage(), exception);
     }
 
-    public static void debug(Object msg)
+    public static void debug(Object message)
     {
-        Trail.log(Level.DEBUG, Trail.getDefaultTag(), msg.toString());
+        Trail.log(Level.DEBUG, Trail.getDefaultTag(), message.toString());
     }
 
-    public static void debug(Throwable e)
+    public static void debug(Throwable exception)
     {
-        Trail.log(Level.DEBUG, Trail.getDefaultTag(), e.getMessage(), e);
+        Trail.log(Level.DEBUG, Trail.getDefaultTag(), exception.getMessage(), exception);
     }
 
-    // ======================= WARNING ======================= \\
+    // ============================ WARNING ============================ \\
 
-    public static void warning(Object tag, Object msg, Throwable e)
+    public static void warning(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.WARNING, tag.toString(), msg.toString(), e);
+        Trail.log(Level.WARNING, tag.toString(), message.toString(), exception);
     }
 
-    public static void warning(Object tag, Object msg)
+    public static void warning(Object tag, Object message)
     {
-        Trail.log(Level.WARNING, tag.toString(), msg.toString());
+        Trail.log(Level.WARNING, tag.toString(), message.toString());
     }
 
-    public static void warning(Object tag, Throwable e)
+    public static void warning(Object tag, Throwable exception)
     {
-        Trail.log(Level.WARNING, tag.toString(), e.getMessage(), e);
+        Trail.log(Level.WARNING, tag.toString(), exception.getMessage(), exception);
     }
 
-    public static void warning(Object msg)
+    public static void warning(Object message)
     {
-        Trail.log(Level.WARNING, Trail.getDefaultTag(), msg.toString());
+        Trail.log(Level.WARNING, Trail.getDefaultTag(), message.toString());
     }
 
-    public static void warning(Throwable e)
+    public static void warning(Throwable exception)
     {
-        Trail.log(Level.WARNING, Trail.getDefaultTag(), e.getMessage(), e);
+        Trail.log(Level.WARNING, Trail.getDefaultTag(), exception.getMessage(), exception);
     }
 
-    // ======================= ERROR ======================= \\
+    // ============================ ERROR ============================ \\
 
-    public static void error(Object tag, Object msg, Throwable e)
+    public static void error(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.ERROR, tag.toString(), msg.toString(), e);
+        Trail.log(Level.ERROR, tag.toString(), message.toString(), exception);
     }
 
-    public static void error(Object tag, Object msg)
+    public static void error(Object tag, Object message)
     {
-        Trail.log(Level.ERROR, tag.toString(), msg.toString());
+        Trail.log(Level.ERROR, tag.toString(), message.toString());
     }
 
-    public static void error(Object tag, Throwable e)
+    public static void error(Object tag, Throwable exception)
     {
-        Trail.log(Level.ERROR, tag.toString(), e.getMessage(), e);
+        Trail.log(Level.ERROR, tag.toString(), exception.getMessage(), exception);
     }
 
-    public static void error(Object msg)
+    public static void error(Object message)
     {
-        Trail.log(Level.ERROR, Trail.getDefaultTag(), msg.toString());
+        Trail.log(Level.ERROR, Trail.getDefaultTag(), message.toString());
     }
 
-    public static void error(Throwable e)
+    public static void error(Throwable exception)
     {
-        Trail.log(Level.ERROR, Trail.getDefaultTag(), e.getMessage(), e);
+        Trail.log(Level.ERROR, Trail.getDefaultTag(), exception.getMessage(), exception);
     }
 
-    // ======================= INTERFACES ======================= \\
+    // ========================== INTERFACES ========================== \\
 
     public interface Listener
     {
-        void onLog(Level level, String tag, String message, Throwable error);
+        void onLog(Level level, String tag, String message, Throwable exception);
     }
 
     interface LogPrinter
     {
-        void log(Level level, String tag, String message, Throwable error);
+        void log(Level level, String tag, String message, Throwable exception);
     }
 }
