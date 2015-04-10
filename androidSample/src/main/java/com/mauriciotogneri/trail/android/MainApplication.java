@@ -11,7 +11,7 @@ public class MainApplication extends Application
     {
         super.onCreate();
 
-        // display log in logcat
+        // display logs in logcat
         Trail.enableLogs(true);
 
         // enable listeners to receive log events

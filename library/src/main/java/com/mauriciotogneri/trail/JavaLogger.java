@@ -31,7 +31,7 @@ public class JavaLogger implements LogPrinter
 
         if (exception != null)
         {
-            exception.printStackTrace(System.out);
+            exception.printStackTrace(stream);
         }
 
         stream.flush();

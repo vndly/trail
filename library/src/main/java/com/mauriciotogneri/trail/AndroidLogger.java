@@ -98,40 +98,40 @@ public class AndroidLogger implements LogPrinter
 
     public boolean isAvailable()
     {
-        checkAndroid();
+        if (this.androidLogLoaded == null)
+        {
+            checkAndroid();
+        }
 
         return (this.androidLogLoaded != null) && this.androidLogLoaded;
     }
 
     private void checkAndroid()
     {
-        if (this.androidLogLoaded == null)
+        try
         {
-            try
-            {
-                Class<?> logClass = Class.forName("android.util.Log");
+            Class<?> logClass = Class.forName("android.util.Log");
 
-                this.methodVerboseShort = logClass.getMethod("v", String.class, String.class);
-                this.methodVerboseLong = logClass.getMethod("v", String.class, String.class, Throwable.class);
+            this.methodVerboseShort = logClass.getMethod("v", String.class, String.class);
+            this.methodVerboseLong = logClass.getMethod("v", String.class, String.class, Throwable.class);
 
-                this.methodInfoShort = logClass.getMethod("i", String.class, String.class);
-                this.methodInfoLong = logClass.getMethod("i", String.class, String.class, Throwable.class);
+            this.methodInfoShort = logClass.getMethod("i", String.class, String.class);
+            this.methodInfoLong = logClass.getMethod("i", String.class, String.class, Throwable.class);
 
-                this.methodDebugShort = logClass.getMethod("d", String.class, String.class);
-                this.methodDebugLong = logClass.getMethod("d", String.class, String.class, Throwable.class);
+            this.methodDebugShort = logClass.getMethod("d", String.class, String.class);
+            this.methodDebugLong = logClass.getMethod("d", String.class, String.class, Throwable.class);
 
-                this.methodWarningShort = logClass.getMethod("w", String.class, String.class);
-                this.methodWarningLong = logClass.getMethod("w", String.class, String.class, Throwable.class);
+            this.methodWarningShort = logClass.getMethod("w", String.class, String.class);
+            this.methodWarningLong = logClass.getMethod("w", String.class, String.class, Throwable.class);
 
-                this.methodErrorShort = logClass.getMethod("e", String.class, String.class);
-                this.methodErrorLong = logClass.getMethod("e", String.class, String.class, Throwable.class);
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException("Unable to load android.util.Log class. Is the code running in an Android environment?");
-            }
+            this.methodErrorShort = logClass.getMethod("e", String.class, String.class);
+            this.methodErrorLong = logClass.getMethod("e", String.class, String.class, Throwable.class);
 
             this.androidLogLoaded = true;
+        }
+        catch (Exception e)
+        {
+            this.androidLogLoaded = false;
         }
     }
 }

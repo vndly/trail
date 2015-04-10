@@ -11,7 +11,7 @@ import com.mauriciotogneri.trail.Trail.Listener;
 
 import java.io.IOException;
 
-public class MainActivity extends Activity implements Listener
+public class AndroidSample extends Activity implements Listener
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
