@@ -1,13 +1,16 @@
 package com.mauriciotogneri.trail;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Trail
 {
-    private static boolean LOGS_ENABLED = true;
+    private static Mode mode = null;
+    private static boolean logsEnabled = true;
+    private static boolean listenersEnabled = true;
+
+    private static LogPrinter javaLogger = new JavaLogger();
+    private static LogPrinter androidLogger = new AndroidLogger();
 
     private static List<Listener> listeners = new ArrayList<Listener>();
 
@@ -16,9 +19,24 @@ public final class Trail
         VERBOSE, INFO, DEBUG, WARNING, ERROR
     }
 
-    public static void setEnabled(boolean enabled)
+    public enum Mode
     {
-        Trail.LOGS_ENABLED = enabled;
+        JAVA, ANDROID
+    }
+
+    public static void setMode(Mode mode)
+    {
+        Trail.mode = mode;
+    }
+
+    public static void enableLogs(boolean enabled)
+    {
+        Trail.logsEnabled = enabled;
+    }
+
+    public static void enableListeners(boolean enabled)
+    {
+        Trail.listenersEnabled = enabled;
     }
 
     public static void addListener(Listener listener)
@@ -46,219 +64,178 @@ public final class Trail
         }
     }
 
-    public static void log(Level level, String tag, String message, Throwable error)
+    private static void log(Level level, String tag, String message, Throwable error)
     {
-        if (Trail.LOGS_ENABLED)
+        if (Trail.logsEnabled)
         {
-            switch (level)
+            if (Trail.mode == Mode.JAVA)
             {
-                case VERBOSE:
-                    if (error != null)
-                    {
-                        Log.v(tag, message, error);
-                    }
-                    else
-                    {
-                        Log.v(tag, message);
-                    }
-                    break;
-
-                case INFO:
-                    if (error != null)
-                    {
-                        Log.i(tag, message, error);
-                    }
-                    else
-                    {
-                        Log.i(tag, message);
-                    }
-                    break;
-
-                case DEBUG:
-                    if (error != null)
-                    {
-                        Log.d(tag, message, error);
-                    }
-                    else
-                    {
-                        Log.d(tag, message);
-                    }
-                    break;
-
-                case WARNING:
-                    if (error != null)
-                    {
-                        Log.w(tag, message, error);
-                    }
-                    else
-                    {
-                        Log.w(tag, message);
-                    }
-                    break;
-
-                case ERROR:
-                    if (error != null)
-                    {
-                        Log.e(tag, message, error);
-                    }
-                    else
-                    {
-                        Log.e(tag, message);
-                    }
-                    break;
+                Trail.javaLogger.log(level, tag, message, error);
+            }
+            else if (Trail.mode == Mode.ANDROID)
+            {
+                Trail.androidLogger.log(level, tag, message, error);
             }
         }
 
-        for (Listener listener : Trail.listeners)
+        if (Trail.listenersEnabled)
         {
-            listener.onLog(level, tag, message, error);
+            for (Listener listener : Trail.listeners)
+            {
+                listener.onLog(level, tag, message, error);
+            }
         }
     }
 
-    public static void log(Level level, String tag, String message)
+    private static void log(Level level, String tag, String message)
     {
         Trail.log(level, tag, message, null);
     }
 
     // ======================= VERBOSE ======================= \\
 
-    public static void v(Object tag, Object msg, Throwable e)
+    public static void verbose(Object tag, Object msg, Throwable e)
     {
         Trail.log(Level.VERBOSE, tag.toString(), msg.toString(), e);
     }
 
-    public static void v(Object tag, Object msg)
+    public static void verbose(Object tag, Object msg)
     {
         Trail.log(Level.VERBOSE, tag.toString(), msg.toString());
     }
 
-    public static void v(Object tag, Throwable e)
+    public static void verbose(Object tag, Throwable e)
     {
         Trail.log(Level.VERBOSE, tag.toString(), e.getMessage(), e);
     }
 
-    public static void v(Object msg)
+    public static void verbose(Object msg)
     {
         Trail.log(Level.VERBOSE, Trail.getDefaultTag(), msg.toString());
     }
 
-    public static void v(Throwable e)
+    public static void verbose(Throwable e)
     {
         Trail.log(Level.VERBOSE, Trail.getDefaultTag(), e.getMessage(), e);
     }
 
     // ======================= INFO ======================= \\
 
-    public static void i(Object tag, Object msg, Throwable e)
+    public static void info(Object tag, Object msg, Throwable e)
     {
         Trail.log(Level.INFO, tag.toString(), msg.toString(), e);
     }
 
-    public static void i(Object tag, Object msg)
+    public static void info(Object tag, Object msg)
     {
         Trail.log(Level.INFO, tag.toString(), msg.toString());
     }
 
-    public static void i(Object tag, Throwable e)
+    public static void info(Object tag, Throwable e)
     {
         Trail.log(Level.INFO, tag.toString(), e.getMessage(), e);
     }
 
-    public static void i(Object msg)
+    public static void info(Object msg)
     {
         Trail.log(Level.INFO, Trail.getDefaultTag(), msg.toString());
     }
 
-    public static void i(Throwable e)
+    public static void info(Throwable e)
     {
         Trail.log(Level.INFO, Trail.getDefaultTag(), e.getMessage(), e);
     }
 
     // ======================= DEBUG ======================= \\
 
-    public static void d(Object tag, Object msg, Throwable e)
+    public static void debug(Object tag, Object msg, Throwable e)
     {
         Trail.log(Level.DEBUG, tag.toString(), msg.toString(), e);
     }
 
-    public static void d(Object tag, Object msg)
+    public static void debug(Object tag, Object msg)
     {
         Trail.log(Level.DEBUG, tag.toString(), msg.toString());
     }
 
-    public static void d(Object tag, Throwable e)
+    public static void debug(Object tag, Throwable e)
     {
         Trail.log(Level.DEBUG, tag.toString(), e.getMessage(), e);
     }
 
-    public static void d(Object msg)
+    public static void debug(Object msg)
     {
         Trail.log(Level.DEBUG, Trail.getDefaultTag(), msg.toString());
     }
 
-    public static void d(Throwable e)
+    public static void debug(Throwable e)
     {
         Trail.log(Level.DEBUG, Trail.getDefaultTag(), e.getMessage(), e);
     }
 
     // ======================= WARNING ======================= \\
 
-    public static void w(Object tag, Object msg, Throwable e)
+    public static void warning(Object tag, Object msg, Throwable e)
     {
         Trail.log(Level.WARNING, tag.toString(), msg.toString(), e);
     }
 
-    public static void w(Object tag, Object msg)
+    public static void warning(Object tag, Object msg)
     {
         Trail.log(Level.WARNING, tag.toString(), msg.toString());
     }
 
-    public static void w(Object tag, Throwable e)
+    public static void warning(Object tag, Throwable e)
     {
         Trail.log(Level.WARNING, tag.toString(), e.getMessage(), e);
     }
 
-    public static void w(Object msg)
+    public static void warning(Object msg)
     {
         Trail.log(Level.WARNING, Trail.getDefaultTag(), msg.toString());
     }
 
-    public static void w(Throwable e)
+    public static void warning(Throwable e)
     {
         Trail.log(Level.WARNING, Trail.getDefaultTag(), e.getMessage(), e);
     }
 
     // ======================= ERROR ======================= \\
 
-    public static void e(Object tag, Object msg, Throwable e)
+    public static void error(Object tag, Object msg, Throwable e)
     {
         Trail.log(Level.ERROR, tag.toString(), msg.toString(), e);
     }
 
-    public static void e(Object tag, Object msg)
+    public static void error(Object tag, Object msg)
     {
         Trail.log(Level.ERROR, tag.toString(), msg.toString());
     }
 
-    public static void e(Object tag, Throwable e)
+    public static void error(Object tag, Throwable e)
     {
         Trail.log(Level.ERROR, tag.toString(), e.getMessage(), e);
     }
 
-    public static void e(Object msg)
+    public static void error(Object msg)
     {
         Trail.log(Level.ERROR, Trail.getDefaultTag(), msg.toString());
     }
 
-    public static void e(Throwable e)
+    public static void error(Throwable e)
     {
         Trail.log(Level.ERROR, Trail.getDefaultTag(), e.getMessage(), e);
     }
 
-    // ======================= LISTENER ======================= \\
+    // ======================= INTERFACES ======================= \\
 
     public interface Listener
     {
         void onLog(Level level, String tag, String message, Throwable error);
+    }
+
+    interface LogPrinter
+    {
+        void log(Level level, String tag, String message, Throwable error);
     }
 }

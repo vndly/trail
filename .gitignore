@@ -24,7 +24,5 @@ gen/
 
 # Ignore gradle files
 .gradle
-settings.gradle
 /build
-/app/build
 **/build
