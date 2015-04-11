@@ -17,15 +17,15 @@ Trail is a simple logging system for **Java** and **Android**.
 
 ### Log parameters
 
-* **Tag**: The tag of the log. It can be any object from which the method ```toString()``` will be called. If missing a default tag with the following format will be used:
+* **Tag**: The tag of the log. It can be any object from which the method `toString()` will be called. If missing a default tag with the following format will be used:
 
-```[THREAD_NAME]CLASS_NAME.METHOD_NAME:LINE_NUMBER```
+`[THREAD_NAME]CLASS_NAME.METHOD_NAME:LINE_NUMBER`
 
 For example:
 
-```[main]Sample.run:78```
+`[main]Sample.run:78`
 
-* **Message**: The message of the log. It can be any object from which the method ```toString()``` will be called.
+* **Message**: The message of the log. It can be any object from which the method `toString()` will be called.
 
 
 * **Exception**: The exception to log (if any).
