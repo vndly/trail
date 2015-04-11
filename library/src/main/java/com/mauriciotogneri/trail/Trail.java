@@ -22,7 +22,9 @@ public final class Trail
     // list of registered listeners
     private static List<Listener> listeners = new ArrayList<Listener>();
 
-    // available log levels
+    /**
+     * Available log levels.
+     */
     public enum Level
     {
         VERBOSE, DEBUG, INFO, WARNING, ERROR

@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  */
 public class AndroidLogger implements LogPrinter
 {
-    // null:  Android platform not yet checked
+    // null:  Android logging not yet checked
     // true:  Android logging available
     // false: Android logging not available
     private Boolean androidLogLoaded = null;
