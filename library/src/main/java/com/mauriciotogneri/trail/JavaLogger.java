@@ -8,7 +8,7 @@ import java.io.PrintStream;
 /**
  * Specific logger for the Java platform. It uses System.out and System.err to print out messages.
  */
-public class JavaLogger implements LogPrinter
+class JavaLogger implements LogPrinter
 {
     /**
      * Filters by the log level in order to use System.out or System.err to print out the log.

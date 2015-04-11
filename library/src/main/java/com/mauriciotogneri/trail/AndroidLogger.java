@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * Specific logger for the Android platform. It uses the android.util.Log class to print out
  * messages to the LogCat.
  */
-public class AndroidLogger implements LogPrinter
+class AndroidLogger implements LogPrinter
 {
     // null:  Android logging not yet checked
     // true:  Android logging available
