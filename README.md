@@ -144,7 +144,7 @@ Enable/disable listeners (enabled by default):
 
 ### Latest JAR:
 
-[trail-1.0.0.jar][1]
+[ ![Download](https://api.bintray.com/packages/mauriciotogneri/maven/Trail/images/download.svg) ](https://github.com/mauriciotogneri/trail/releases/download/v1.0.0/trail-1.0.0.jar)
 
 ### Maven:
 
@@ -189,5 +189,3 @@ Trail works in any version of **Java** and **Android**.
 	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
-
-[1]: https://www.google.com
