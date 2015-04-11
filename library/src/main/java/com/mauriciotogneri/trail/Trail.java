@@ -9,11 +9,11 @@ import java.util.List;
  */
 public final class Trail
 {
-    // printing logs enabled/disabled
-    private static boolean logsEnabled = true;
+    // log printing enabled/disabled
+    private static boolean logPrintingEnabled = true;
 
-    // inform about log events enabled/disabled
-    private static boolean listenersEnabled = true;
+    // listener notification enabled/disabled
+    private static boolean listenerNotificationEnabled = true;
 
     // platform specific loggers
     private static JavaLogger javaLogger = new JavaLogger();
@@ -31,13 +31,13 @@ public final class Trail
     }
 
     /**
-     * Enables or disables printing logs.
+     * Enables or disables log printing.
      *
      * @param enabled true to enable log printing, false to disable
      */
-    public static void enableLogs(boolean enabled)
+    public static void enableLogPrinting(boolean enabled)
     {
-        Trail.logsEnabled = enabled;
+        Trail.logPrintingEnabled = enabled;
     }
 
     /**
@@ -45,9 +45,9 @@ public final class Trail
      *
      * @param enabled true to enable log events, false to disable
      */
-    public static void enableListeners(boolean enabled)
+    public static void enableListenerNotification(boolean enabled)
     {
-        Trail.listenersEnabled = enabled;
+        Trail.listenerNotificationEnabled = enabled;
     }
 
     /**
@@ -135,12 +135,12 @@ public final class Trail
     {
         String finalTag = tag;
 
-        if ((finalTag == null) && (Trail.logsEnabled || (Trail.listenersEnabled && !Trail.listeners.isEmpty())))
+        if ((finalTag == null) && (Trail.logPrintingEnabled || (Trail.listenerNotificationEnabled && !Trail.listeners.isEmpty())))
         {
             finalTag = Trail.getDefaultTag();
         }
 
-        if (Trail.logsEnabled)
+        if (Trail.logPrintingEnabled)
         {
             if (Trail.androidLogger.isAvailable())
             {
@@ -152,9 +152,9 @@ public final class Trail
             }
         }
 
-        if (Trail.listenersEnabled && !Trail.listeners.isEmpty())
+        if (Trail.listenerNotificationEnabled && !Trail.listeners.isEmpty())
         {
-            TrailLog log = new TrailLog(level, Trail.getCodeLocation(3), tag, message, exception);
+            TrailLog log = new TrailLog(level, Trail.getCodeLocation(3), finalTag, message, exception);
 
             for (Listener listener : Trail.listeners)
             {

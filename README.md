@@ -21,7 +21,7 @@ Trail is a simple logging system for **Java** and **Android**.
 
 * **Message**: The message of the log. It can be any object from which the method `toString()` will be called.
 
-* **Exception**: The exception to log (if any).
+* **Exception**: The exception of the log (if any).
 
 ## Examples
 
@@ -76,7 +76,7 @@ Trail is a simple logging system for **Java** and **Android**.
 The library provides a method to retrieve the current location of the executing code:
 
 ```java
- Trail.getCodeLocation();
+ Trail.getCodeLocation()
 ```
 
 This method returns an instance of the class `CodeLocation` that contains the name of the thread, the name of the class, the name of the method, the line number and the stack trace of the line of code being executed at that moment. This can be used to add more information to a log.
@@ -100,7 +100,7 @@ The library allows to register/unregister listeners to be informed when a log is
 ```java
  public class SampleListener implements Listener
  {
-     private void run()
+     public void run()
      {
          // register the object to receive log events
          Trail.register(this);
@@ -125,18 +125,18 @@ The library allows to register/unregister listeners to be informed when a log is
 
 ## Global settings
 
-Enable/disable logs (enabled by default). Notice that listeners will be informed (if enabled) even if the log printing is disabled.
+Enable/disable log printing (enabled by default):
 
 ```java
  // disables the log printing
- Trail.enableLogs(false);
+ Trail.enableLogPrinting(false);
 ```
 
-Enable/disable listeners (enabled by default):
+Enable/disable listeners notification (enabled by default):
 
 ```java
  // disables the listeners notification
- Trail.enableListeners(false);
+ Trail.enableListenerNotification(false);
 ```
 
 ## Download

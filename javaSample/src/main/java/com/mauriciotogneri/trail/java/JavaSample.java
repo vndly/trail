@@ -16,10 +16,10 @@ public class JavaSample implements Listener
     public static void main(String[] args) throws IOException
     {
         // display logs in console
-        Trail.enableLogs(true);
+        Trail.enableLogPrinting(true);
 
         // enable listeners to receive log events
-        Trail.enableListeners(true);
+        Trail.enableListenerNotification(true);
 
         JavaSample javaSample = new JavaSample();
 
