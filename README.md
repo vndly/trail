@@ -2,7 +2,7 @@
 
 Trail is a simple logging system for **Java** and **Android**.
 
-### Features
+## Features
 
 * Easy and direct
 * Same API for Java/Android logging (the library will automatically detect the platform)
@@ -15,9 +15,9 @@ Trail is a simple logging system for **Java** and **Android**.
 * 5 different ways to create logs for each level
 * Register/unregister listeners for log events
 
-### Log parameters
+## Log parameters
 
-* **Tag**: The tag of the log. It can be any object from which the method `toString()` will be called. If missing a default tag with the following format will be used:
+* **Tag**: The tag of the log. It can be any object from which the method `toString()` will be called. If missing, a default tag with the following format will be used:
 
 `[THREAD_NAME]CLASS_NAME.METHOD_NAME:LINE_NUMBER`
 
@@ -59,7 +59,7 @@ For example:
  {
      // do something
  }
- catch (Exception e)
+ catch (NetworkException e)
  {
      // providing a tag and an exception
      Trail.warning("NETWORK_PROBLEM", e);
@@ -71,16 +71,59 @@ For example:
  {
      // do something
  }
- catch (Exception e)
+ catch (SQLException e)
  {
      // providing a tag, a message and an exception
      Trail.error("DATABASE_PROBLEM", "Invalid query format", e);
  }
 ```
 
-### Listeners
+## Listeners
 
-### Settings
+The library allows to register/unregister listeners to be informed when a log is created:
+
+```java
+ public class SampleListener implements Listener
+ {
+     private void run()
+     {
+         // register the object to receive log events
+         Trail.register(this);
+
+         // the object will be informed about the following log
+         Trail.verbose("Message 1");
+
+         // unregister the object to stop receiving log events
+         Trail.unregister(this);
+         
+         // the object will NOT be informed about the following log
+         Trail.info("Tag", "Message 2");
+     }
+
+     @Override
+     public void onLog(Level level, String tag, String message, Throwable exception)
+     {
+         // TODO: process log information (write in a file/database, send by network, etc.)
+     }
+ }
+```
+
+
+## Global settings
+
+Enable/disable logs (enabled by default). Notice that listeners will be informed (if enabled) even if the log printing is disabled.
+
+```java
+ // disables the log printing
+ Trail.enableLogs(false);
+```
+
+Enable/disable listeners (enabled by default):
+
+```java
+ // disables the listeners notification
+ Trail.enableListeners(false);
+```
 
 ## Download
 
