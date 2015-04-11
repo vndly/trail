@@ -149,7 +149,7 @@ Enable/disable listeners notification (enabled by default):
 
 ```xml
 <dependency>
-    <groupId>com.mauriciotogneri.trail</groupId>
+    <groupId>com.mauriciotogneri</groupId>
     <artifactId>trail</artifactId>
     <version>1.0.0</version>
 </dependency>
@@ -158,7 +158,7 @@ Enable/disable listeners notification (enabled by default):
 ### Gradle:
 
 ```groovy
-compile 'com.mauriciotogneri.trail:trail:1.0.0'
+compile 'com.mauriciotogneri:trail:1.0.0'
 ```
 
 ## Compatibility
