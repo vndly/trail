@@ -26,11 +26,11 @@ public class AndroidSample extends Activity implements Listener
         // only message
         Trail.verbose("MESSAGE 1");
 
-        // tag & message
-        Trail.info("TAG 2", "MESSAGE 2");
-
         // only exception
         Trail.debug(new NullPointerException("Not pointing anywhere!"));
+
+        // tag & message
+        Trail.info("TAG 2", "MESSAGE 2");
 
         // tag & exception
         Trail.warning("TAG 3", new IllegalArgumentException("Wrong argument!"));

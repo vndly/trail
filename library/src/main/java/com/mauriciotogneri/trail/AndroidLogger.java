@@ -5,25 +5,46 @@ import com.mauriciotogneri.trail.Trail.LogPrinter;
 
 import java.lang.reflect.Method;
 
+/**
+ * Specific logger for the Android platform. It uses the android.util.Log class to print out
+ * messages to the LogCat.
+ */
 public class AndroidLogger implements LogPrinter
 {
+    // null:  Android platform not yet checked
+    // true:  Android logging available
+    // false: Android logging not available
     private Boolean androidLogLoaded = null;
 
+    // verbose loggers
     private Method methodVerboseShort = null;
     private Method methodVerboseLong = null;
 
-    private Method methodInfoShort = null;
-    private Method methodInfoLong = null;
-
+    // debug loggers
     private Method methodDebugShort = null;
     private Method methodDebugLong = null;
 
+    // info loggers
+    private Method methodInfoShort = null;
+    private Method methodInfoLong = null;
+
+    // warning loggers
     private Method methodWarningShort = null;
     private Method methodWarningLong = null;
 
+    // error loggers
     private Method methodErrorShort = null;
     private Method methodErrorLong = null;
 
+    /**
+     * Invokes the corresponding logging method according to the log level.
+     *
+     * @param level     the log {@link Level}
+     * @param tag       the tag
+     * @param message   the message
+     * @param exception the exception (can be null)
+     * @throws RuntimeException if unable to load the Log class from the Android platform
+     */
     @Override
     public void log(Level level, String tag, String message, Throwable exception) throws RuntimeException
     {
@@ -96,6 +117,11 @@ public class AndroidLogger implements LogPrinter
         }
     }
 
+    /**
+     * Checks if the Android platform is available (if not checked yet).
+     *
+     * @return true if the Android platform is available, false if not available or not checked yet
+     */
     public boolean isAvailable()
     {
         if (this.androidLogLoaded == null)
@@ -106,6 +132,9 @@ public class AndroidLogger implements LogPrinter
         return (this.androidLogLoaded != null) && this.androidLogLoaded;
     }
 
+    /**
+     * Checks if the code is running on an Android platform.
+     */
     private void checkAndroid()
     {
         try
