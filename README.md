@@ -79,7 +79,7 @@ The library provides a method to retrieve the current location of the executing 
  Trail.getCodeLocation();
 ```
 
-This method returns an instance of the class `CodeLocation` that contains the name of the thread, the name of the class, the name of the method and the line number of the code being executed at that moment. This can be used to add more information to a log.
+This method returns an instance of the class `CodeLocation` that contains the name of the thread, the name of the class, the name of the method, the line number and the stack trace of the line of code being executed at that moment. This can be used to add more information to a log.
 
 For example:
 
@@ -116,10 +116,9 @@ The library allows to register/unregister listeners to be informed when a log is
      }
 
      @Override
-     public void onLog(Level level, CodeLocation location, String tag, String message, Throwable exception)
+     public void onLog(TrailLog log)
      {
          // TODO: process log information (write in a file/database, send by network, etc.)
-         // Notice that the 'exception' parameter could be null
      }
  }
 ```
