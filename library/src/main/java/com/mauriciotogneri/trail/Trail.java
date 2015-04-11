@@ -25,7 +25,7 @@ public final class Trail
     /**
      * Available log levels.
      */
-    public enum Level
+    public enum LogLevel
     {
         VERBOSE, DEBUG, INFO, WARNING, ERROR
     }
@@ -94,10 +94,11 @@ public final class Trail
     private static CodeLocation getCodeLocation(int depth)
     {
         StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-        StackTraceElement element = stackTrace[depth];
-        String className = element.getClassName();
+        StackTraceElement[] filteredStackTrace = new StackTraceElement[stackTrace.length - depth];
 
-        return new CodeLocation(Thread.currentThread().getName(), className.substring(className.lastIndexOf('.') + 1), element.getMethodName(), element.getLineNumber());
+        System.arraycopy(stackTrace, depth, filteredStackTrace, 0, filteredStackTrace.length);
+
+        return new CodeLocation(filteredStackTrace);
     }
 
     /**
@@ -125,12 +126,12 @@ public final class Trail
      * Prints out the log information using the corresponding {@link LogPrinter}. It also informs
      * the registered listeners about the log event.
      *
-     * @param level     the log {@link Level}
+     * @param level     the log {@link LogLevel}
      * @param tag       the tag
      * @param message   the message
      * @param exception the exception (can be null)
      */
-    private static void log(Level level, String tag, String message, Throwable exception)
+    private static void log(LogLevel level, String tag, String message, Throwable exception)
     {
         String finalTag = tag;
 
@@ -153,11 +154,11 @@ public final class Trail
 
         if (Trail.listenersEnabled && !Trail.listeners.isEmpty())
         {
-            CodeLocation location = Trail.getCodeLocation(3);
+            TrailLog log = new TrailLog(level, Trail.getCodeLocation(3), tag, message, exception);
 
             for (Listener listener : Trail.listeners)
             {
-                listener.onLog(level, location, finalTag, message, exception);
+                listener.onLog(log);
             }
         }
     }
@@ -173,7 +174,7 @@ public final class Trail
      */
     public static void verbose(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.VERBOSE, tag.toString(), message.toString(), exception);
+        Trail.log(LogLevel.VERBOSE, tag.toString(), message.toString(), exception);
     }
 
     /**
@@ -184,7 +185,7 @@ public final class Trail
      */
     public static void verbose(Object tag, Object message)
     {
-        Trail.log(Level.VERBOSE, tag.toString(), message.toString(), null);
+        Trail.log(LogLevel.VERBOSE, tag.toString(), message.toString(), null);
     }
 
     /**
@@ -195,7 +196,7 @@ public final class Trail
      */
     public static void verbose(Object tag, Throwable exception)
     {
-        Trail.log(Level.VERBOSE, tag.toString(), exception.getMessage(), exception);
+        Trail.log(LogLevel.VERBOSE, tag.toString(), exception.getMessage(), exception);
     }
 
     /**
@@ -205,7 +206,7 @@ public final class Trail
      */
     public static void verbose(Object message)
     {
-        Trail.log(Level.VERBOSE, null, message.toString(), null);
+        Trail.log(LogLevel.VERBOSE, null, message.toString(), null);
     }
 
     /**
@@ -215,7 +216,7 @@ public final class Trail
      */
     public static void verbose(Throwable exception)
     {
-        Trail.log(Level.VERBOSE, null, exception.getMessage(), exception);
+        Trail.log(LogLevel.VERBOSE, null, exception.getMessage(), exception);
     }
 
     // ============================ DEBUG ============================ \\
@@ -229,7 +230,7 @@ public final class Trail
      */
     public static void debug(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.DEBUG, tag.toString(), message.toString(), exception);
+        Trail.log(LogLevel.DEBUG, tag.toString(), message.toString(), exception);
     }
 
     /**
@@ -240,7 +241,7 @@ public final class Trail
      */
     public static void debug(Object tag, Object message)
     {
-        Trail.log(Level.DEBUG, tag.toString(), message.toString(), null);
+        Trail.log(LogLevel.DEBUG, tag.toString(), message.toString(), null);
     }
 
     /**
@@ -251,7 +252,7 @@ public final class Trail
      */
     public static void debug(Object tag, Throwable exception)
     {
-        Trail.log(Level.DEBUG, tag.toString(), exception.getMessage(), exception);
+        Trail.log(LogLevel.DEBUG, tag.toString(), exception.getMessage(), exception);
     }
 
     /**
@@ -261,7 +262,7 @@ public final class Trail
      */
     public static void debug(Object message)
     {
-        Trail.log(Level.DEBUG, null, message.toString(), null);
+        Trail.log(LogLevel.DEBUG, null, message.toString(), null);
     }
 
     /**
@@ -271,7 +272,7 @@ public final class Trail
      */
     public static void debug(Throwable exception)
     {
-        Trail.log(Level.DEBUG, null, exception.getMessage(), exception);
+        Trail.log(LogLevel.DEBUG, null, exception.getMessage(), exception);
     }
 
     // ============================ INFO ============================ \\
@@ -285,7 +286,7 @@ public final class Trail
      */
     public static void info(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.INFO, tag.toString(), message.toString(), exception);
+        Trail.log(LogLevel.INFO, tag.toString(), message.toString(), exception);
     }
 
     /**
@@ -296,7 +297,7 @@ public final class Trail
      */
     public static void info(Object tag, Object message)
     {
-        Trail.log(Level.INFO, tag.toString(), message.toString(), null);
+        Trail.log(LogLevel.INFO, tag.toString(), message.toString(), null);
     }
 
     /**
@@ -307,7 +308,7 @@ public final class Trail
      */
     public static void info(Object tag, Throwable exception)
     {
-        Trail.log(Level.INFO, tag.toString(), exception.getMessage(), exception);
+        Trail.log(LogLevel.INFO, tag.toString(), exception.getMessage(), exception);
     }
 
     /**
@@ -317,7 +318,7 @@ public final class Trail
      */
     public static void info(Object message)
     {
-        Trail.log(Level.INFO, null, message.toString(), null);
+        Trail.log(LogLevel.INFO, null, message.toString(), null);
     }
 
     /**
@@ -327,7 +328,7 @@ public final class Trail
      */
     public static void info(Throwable exception)
     {
-        Trail.log(Level.INFO, null, exception.getMessage(), exception);
+        Trail.log(LogLevel.INFO, null, exception.getMessage(), exception);
     }
 
     // ============================ WARNING ============================ \\
@@ -341,7 +342,7 @@ public final class Trail
      */
     public static void warning(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.WARNING, tag.toString(), message.toString(), exception);
+        Trail.log(LogLevel.WARNING, tag.toString(), message.toString(), exception);
     }
 
     /**
@@ -352,7 +353,7 @@ public final class Trail
      */
     public static void warning(Object tag, Object message)
     {
-        Trail.log(Level.WARNING, tag.toString(), message.toString(), null);
+        Trail.log(LogLevel.WARNING, tag.toString(), message.toString(), null);
     }
 
     /**
@@ -363,7 +364,7 @@ public final class Trail
      */
     public static void warning(Object tag, Throwable exception)
     {
-        Trail.log(Level.WARNING, tag.toString(), exception.getMessage(), exception);
+        Trail.log(LogLevel.WARNING, tag.toString(), exception.getMessage(), exception);
     }
 
     /**
@@ -373,7 +374,7 @@ public final class Trail
      */
     public static void warning(Object message)
     {
-        Trail.log(Level.WARNING, null, message.toString(), null);
+        Trail.log(LogLevel.WARNING, null, message.toString(), null);
     }
 
     /**
@@ -383,7 +384,7 @@ public final class Trail
      */
     public static void warning(Throwable exception)
     {
-        Trail.log(Level.WARNING, null, exception.getMessage(), exception);
+        Trail.log(LogLevel.WARNING, null, exception.getMessage(), exception);
     }
 
     // ============================ ERROR ============================ \\
@@ -397,7 +398,7 @@ public final class Trail
      */
     public static void error(Object tag, Object message, Throwable exception)
     {
-        Trail.log(Level.ERROR, tag.toString(), message.toString(), exception);
+        Trail.log(LogLevel.ERROR, tag.toString(), message.toString(), exception);
     }
 
     /**
@@ -408,7 +409,7 @@ public final class Trail
      */
     public static void error(Object tag, Object message)
     {
-        Trail.log(Level.ERROR, tag.toString(), message.toString(), null);
+        Trail.log(LogLevel.ERROR, tag.toString(), message.toString(), null);
     }
 
     /**
@@ -419,7 +420,7 @@ public final class Trail
      */
     public static void error(Object tag, Throwable exception)
     {
-        Trail.log(Level.ERROR, tag.toString(), exception.getMessage(), exception);
+        Trail.log(LogLevel.ERROR, tag.toString(), exception.getMessage(), exception);
     }
 
     /**
@@ -429,7 +430,7 @@ public final class Trail
      */
     public static void error(Object message)
     {
-        Trail.log(Level.ERROR, null, message.toString(), null);
+        Trail.log(LogLevel.ERROR, null, message.toString(), null);
     }
 
     /**
@@ -439,7 +440,7 @@ public final class Trail
      */
     public static void error(Throwable exception)
     {
-        Trail.log(Level.ERROR, null, exception.getMessage(), exception);
+        Trail.log(LogLevel.ERROR, null, exception.getMessage(), exception);
     }
 
     // ========================== INTERFACES ========================== \\
@@ -452,28 +453,8 @@ public final class Trail
         /**
          * Called when a log event occurs.
          *
-         * @param level     the log {@link Level}
-         * @param location  the location where the log was created
-         * @param tag       the tag
-         * @param message   the message
-         * @param exception the exception (can be null)
+         * @param log the log
          */
-        void onLog(Level level, CodeLocation location, String tag, String message, Throwable exception);
-    }
-
-    /**
-     * A LogPrinter prints the logs in a specific platform (e.g., Java, Android, etc.)
-     */
-    interface LogPrinter
-    {
-        /**
-         * Prints the log using the correct output.
-         *
-         * @param level     the log {@link Level}
-         * @param tag       the tag
-         * @param message   the message
-         * @param exception the exception (can be null)
-         */
-        void log(Level level, String tag, String message, Throwable exception);
+        void onLog(TrailLog log);
     }
 }

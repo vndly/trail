@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.mauriciotogneri.trail.CodeLocation;
 import com.mauriciotogneri.trail.Trail;
-import com.mauriciotogneri.trail.Trail.Level;
 import com.mauriciotogneri.trail.Trail.Listener;
+import com.mauriciotogneri.trail.TrailLog;
 
 import java.io.IOException;
 
@@ -41,17 +40,17 @@ public class AndroidSample extends Activity implements Listener
     }
 
     @Override
-    public void onLog(Level level, CodeLocation location, String tag, String message, Throwable exception)
+    public void onLog(TrailLog log)
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("Type:      ").append(level.toString()).append("\n");
-        builder.append("Tag:       ").append(tag).append("\n");
-        builder.append("Message:   ").append(message).append("\n");
-        builder.append("Location:  ").append(location).append("\n");
+        builder.append("Type:      ").append(log.level.toString()).append("\n");
+        builder.append("Tag:       ").append(log.tag).append("\n");
+        builder.append("Message:   ").append(log.message).append("\n");
+        builder.append("Location:  ").append(log.location).append("\n");
 
-        if (exception != null)
+        if (log.hasException())
         {
-            builder.append("Exception: ").append(exception.getClass().getSimpleName()).append("\n");
+            builder.append("Exception: ").append(log.exception.getClass().getSimpleName()).append("\n");
         }
 
         builder.append("\n");

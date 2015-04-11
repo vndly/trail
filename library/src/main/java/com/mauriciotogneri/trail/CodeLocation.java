@@ -25,12 +25,21 @@ public class CodeLocation
      */
     public final int lineNumber;
 
-    CodeLocation(String thread, String className, String method, int lineNumber)
+    /**
+     * The stack trace.
+     */
+    public StackTraceElement[] stackTrace;
+
+    CodeLocation(StackTraceElement[] stackTrace)
     {
-        this.thread = thread;
-        this.className = className;
-        this.method = method;
-        this.lineNumber = lineNumber;
+        this.stackTrace = stackTrace;
+        StackTraceElement root = stackTrace[0];
+
+        this.thread = Thread.currentThread().getName();
+        String className = root.getClassName();
+        this.className = className.substring(className.lastIndexOf('.') + 1);
+        this.method = root.getMethodName();
+        this.lineNumber = root.getLineNumber();
     }
 
     @Override

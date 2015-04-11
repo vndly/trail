@@ -1,7 +1,6 @@
 package com.mauriciotogneri.trail;
 
-import com.mauriciotogneri.trail.Trail.Level;
-import com.mauriciotogneri.trail.Trail.LogPrinter;
+import com.mauriciotogneri.trail.Trail.LogLevel;
 
 import java.lang.reflect.Method;
 
@@ -39,14 +38,14 @@ class AndroidLogger implements LogPrinter
     /**
      * Invokes the corresponding logging method according to the log level.
      *
-     * @param level     the log {@link Level}
+     * @param level     the log {@link LogLevel}
      * @param tag       the tag
      * @param message   the message
      * @param exception the exception (can be null)
      * @throws RuntimeException if unable to load the Log class from the Android platform
      */
     @Override
-    public void log(Level level, String tag, String message, Throwable exception) throws RuntimeException
+    public void log(LogLevel level, String tag, String message, Throwable exception) throws RuntimeException
     {
         if (isAvailable())
         {
