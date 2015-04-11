@@ -17,16 +17,9 @@ Trail is a simple logging system for **Java** and **Android**.
 
 ## Log parameters
 
-* **Tag**: The tag of the log. It can be any object from which the method `toString()` will be called. If missing, a default tag with the following format will be used:
-
-`[THREAD_NAME]CLASS_NAME.METHOD_NAME:LINE_NUMBER`
-
-For example:
-
-`[main]Sample.run:78`
+* **Tag**: The tag of the log. It can be any object from which the method `toString()` will be called. If missing, a default tag with the name of the class where the log is created will be used.
 
 * **Message**: The message of the log. It can be any object from which the method `toString()` will be called.
-
 
 * **Exception**: The exception to log (if any).
 
@@ -78,6 +71,28 @@ For example:
  }
 ```
 
+## Utils
+
+The library provides a method to retrieve the current location of the executing code:
+
+```java
+ Trail.getCodeLocation();
+```
+
+This method returns an instance of the class `CodeLocation` that contains the name of the thread, the name of the class, the name of the method and the line number of the code being executed at that moment. This can be used to add more information to a log.
+
+For example:
+
+```java
+ Trail.verbose("LOCATION", "I am at " + Trail.getCodeLocation());
+```
+
+Could generate the following output:
+
+```text
+ LOCATION: I am at [main]Sample.run:78
+```
+
 ## Listeners
 
 The library allows to register/unregister listeners to be informed when a log is created:
@@ -101,13 +116,13 @@ The library allows to register/unregister listeners to be informed when a log is
      }
 
      @Override
-     public void onLog(Level level, String tag, String message, Throwable exception)
+     public void onLog(Level level, CodeLocation location, String tag, String message, Throwable exception)
      {
          // TODO: process log information (write in a file/database, send by network, etc.)
+         // Notice that the 'exception' parameter could be null
      }
  }
 ```
-
 
 ## Global settings
 

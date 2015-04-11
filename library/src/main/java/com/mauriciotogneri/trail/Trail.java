@@ -76,13 +76,33 @@ public final class Trail
     }
 
     /**
-     * Returns a string representing the default tag using the following format:
-     * <p/>
-     * [THREAD_NAME]CLASS_NAME.METHOD_NAME:LINE_NUMBER
-     * <p/>
-     * For example:
-     * <p/>
-     * [main]Sample.run:78
+     * Returns the code location from where the method was called.
+     *
+     * @return the code location
+     */
+    public static CodeLocation getCodeLocation()
+    {
+        return getCodeLocation(2);
+    }
+
+    /**
+     * Returns the code location from where the method was called.
+     *
+     * @param depth the level of depth in the stack to use
+     * @return the code location
+     */
+    private static CodeLocation getCodeLocation(int depth)
+    {
+        StackTraceElement[] stackTrace = new Throwable().getStackTrace();
+        StackTraceElement element = stackTrace[depth];
+        String className = element.getClassName();
+
+        return new CodeLocation(Thread.currentThread().getName(), className.substring(className.lastIndexOf('.') + 1), element.getMethodName(), element.getLineNumber());
+    }
+
+    /**
+     * Returns a string representing the default tag. The value of the tag will be the name of the
+     * class from there the log was called.
      *
      * @return the default tag
      */
@@ -91,20 +111,9 @@ public final class Trail
         try
         {
             StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-            StackTraceElement element = stackTrace[3];
-            String className = element.getClassName();
+            String className = stackTrace[3].getClassName();
 
-            StringBuilder builder = new StringBuilder();
-            builder.append('[');
-            builder.append(Thread.currentThread().getName());
-            builder.append(']');
-            builder.append(className.substring(className.lastIndexOf('.') + 1));
-            builder.append('.');
-            builder.append(element.getMethodName());
-            builder.append(':');
-            builder.append(element.getLineNumber());
-
-            return builder.toString();
+            return className.substring(className.lastIndexOf('.') + 1);
         }
         catch (Exception e)
         {
@@ -142,11 +151,13 @@ public final class Trail
             }
         }
 
-        if (Trail.listenersEnabled)
+        if (Trail.listenersEnabled && !Trail.listeners.isEmpty())
         {
+            CodeLocation location = Trail.getCodeLocation(3);
+
             for (Listener listener : Trail.listeners)
             {
-                listener.onLog(level, finalTag, message, exception);
+                listener.onLog(level, location, finalTag, message, exception);
             }
         }
     }
@@ -442,11 +453,12 @@ public final class Trail
          * Called when a log event occurs.
          *
          * @param level     the log {@link Level}
+         * @param location  the location where the log was created
          * @param tag       the tag
          * @param message   the message
          * @param exception the exception (can be null)
          */
-        void onLog(Level level, String tag, String message, Throwable exception);
+        void onLog(Level level, CodeLocation location, String tag, String message, Throwable exception);
     }
 
     /**

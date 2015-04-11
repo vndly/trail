@@ -1,5 +1,6 @@
 package com.mauriciotogneri.trail.java;
 
+import com.mauriciotogneri.trail.CodeLocation;
 import com.mauriciotogneri.trail.Trail;
 import com.mauriciotogneri.trail.Trail.Level;
 import com.mauriciotogneri.trail.Trail.Listener;
@@ -41,13 +42,13 @@ public class JavaSample implements Listener
         this.bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
 
         // only message
-        Trail.verbose("MESSAGE 1");
+        Trail.verbose("MESSAGE 1 | " + Trail.getCodeLocation());
 
         // only exception
         Trail.debug(new NullPointerException("Not pointing anywhere!"));
 
         // tag & message
-        Trail.info("TAG 2", "MESSAGE 2");
+        Trail.info("TAG 2", "MESSAGE 2 | " + Trail.getCodeLocation());
 
         // tag & exception
         Trail.warning("TAG 3", new IllegalArgumentException("Wrong argument!"));
@@ -59,7 +60,7 @@ public class JavaSample implements Listener
     }
 
     @Override
-    public void onLog(Level level, String tag, String message, Throwable exception)
+    public void onLog(Level level, CodeLocation location, String tag, String message, Throwable exception)
     {
         try
         {
@@ -67,6 +68,7 @@ public class JavaSample implements Listener
             builder.append("Type:      ").append(level.toString()).append("\n");
             builder.append("Tag:       ").append(tag).append("\n");
             builder.append("Message:   ").append(message).append("\n");
+            builder.append("Location:  ").append(location).append("\n");
 
             if (exception != null)
             {

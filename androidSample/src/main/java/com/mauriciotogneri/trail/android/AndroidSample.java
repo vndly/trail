@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.mauriciotogneri.trail.CodeLocation;
 import com.mauriciotogneri.trail.Trail;
 import com.mauriciotogneri.trail.Trail.Level;
 import com.mauriciotogneri.trail.Trail.Listener;
@@ -40,12 +41,13 @@ public class AndroidSample extends Activity implements Listener
     }
 
     @Override
-    public void onLog(Level level, String tag, String message, Throwable exception)
+    public void onLog(Level level, CodeLocation location, String tag, String message, Throwable exception)
     {
         StringBuilder builder = new StringBuilder();
         builder.append("Type:      ").append(level.toString()).append("\n");
         builder.append("Tag:       ").append(tag).append("\n");
         builder.append("Message:   ").append(message).append("\n");
+        builder.append("Location:  ").append(location).append("\n");
 
         if (exception != null)
         {
