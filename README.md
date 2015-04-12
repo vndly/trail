@@ -155,7 +155,18 @@ Enable/disable listeners notification (enabled by default):
 </dependency>
 ```
 
-Adding **JCenter** to _pom.xml_: [example](https://bintray.com/repo/downloadMavenRepoSettingsFile/downloadSettings?repoPath=%2Fbintray%2Fjcenter)
+Adding **JCenter** to _pom.xml_:
+
+```xml
+<repositories>
+    <repository>
+        <id>central</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+    </repository>
+</repositories>
+
+```
 
 ### Gradle (from JCenter):
 
@@ -166,11 +177,11 @@ compile 'com.mauriciotogneri:trail:1.0.0'
 Adding **JCenter** to _build.gradle_:
 
 ```groovy
- repositories {
-     maven {
-         url  "http://jcenter.bintray.com" 
-     }
- }
+repositories {
+    maven {
+        url  "http://jcenter.bintray.com" 
+    }
+}
 ```
 
 ## Compatibility
