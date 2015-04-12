@@ -163,7 +163,7 @@ Adding **JCenter** to _pom.xml_: [example](https://bintray.com/repo/downloadMave
 compile 'com.mauriciotogneri:trail:1.0.0'
 ```
 
-Adding **JCenter** to build.gradle:
+Adding **JCenter** to _build.gradle_:
 
 ```groovy
  repositories {
