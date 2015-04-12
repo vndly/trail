@@ -135,7 +135,7 @@ Enable/disable log printing (enabled by default):
 Enable/disable listeners notification (enabled by default):
 
 ```java
- // disables the listeners notification
+ // disables the listener notification
  Trail.enableListenerNotification(false);
 ```
 
@@ -143,9 +143,9 @@ Enable/disable listeners notification (enabled by default):
 
 ### Latest JAR:
 
-[ ![Download](https://api.bintray.com/packages/mauriciotogneri/maven/Trail/images/download.svg) ](https://github.com/mauriciotogneri/trail/releases/download/v1.0.0/trail-1.0.0.jar)
+[ ![Download](https://api.bintray.com/packages/mauriciotogneri/maven/trail/images/download.svg) ](https://github.com/mauriciotogneri/trail/releases/download/v1.0.0/trail-1.0.0.jar)
 
-### Maven:
+### Maven (from JCenter):
 
 ```xml
 <dependency>
@@ -155,15 +155,27 @@ Enable/disable listeners notification (enabled by default):
 </dependency>
 ```
 
-### Gradle:
+Adding JCenter to pom.xml: [example](https://bintray.com/repo/downloadMavenRepoSettingsFile/downloadSettings?repoPath=%2Fbintray%2Fjcenter)
+
+### Gradle (from JCenter):
 
 ```groovy
 compile 'com.mauriciotogneri:trail:1.0.0'
 ```
 
+Adding JCenter to build.gradle:
+
+```groovy
+ repositories {
+     maven {
+         url  "http://jcenter.bintray.com" 
+     }
+ }
+```
+
 ## Compatibility
 
-Trail works in any version of **Java** and **Android**.
+Trail works with any version of **Java** and **Android**.
 
 ## License
 
