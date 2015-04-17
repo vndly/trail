@@ -1,11 +1,11 @@
 # Trail
 
-Trail is a simple logging system for **Java** and **Android**.
+Trail is a simple logging system for **Java** and **Android**. Create logs using the same API and the library will detect automatically in which platform the code is running.
 
 ## Features
 
 * Easy and direct
-* Same API for Java/Android logging (the library will automatically detect the platform)
+* Same API for Java/Android logging
 * 5 log levels: 
    * _VERBOSE_
    * _DEBUG_

@@ -57,7 +57,7 @@ public final class Trail
      *
      * @param listener the listener
      */
-    public static void register(Listener listener)
+    public synchronized static void register(Listener listener)
     {
         if (!Trail.listeners.contains(listener))
         {
@@ -70,7 +70,7 @@ public final class Trail
      *
      * @param listener the listener
      */
-    public static void unregister(Listener listener)
+    public synchronized static void unregister(Listener listener)
     {
         Trail.listeners.remove(listener);
     }
