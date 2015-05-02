@@ -1,4 +1,4 @@
-# Trail
+# Trail [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Trail-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1733)
 
 Trail is a simple logging system for **Java** and **Android**. Create logs using the same API and the library will detect automatically in which platform the code is running.
 
